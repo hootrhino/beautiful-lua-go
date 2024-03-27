@@ -7,7 +7,7 @@ import (
 	"github.com/notnoobmaster/luautil"
 )
 
-func (c Chunk) String() string { 
+func (c Chunk) String() string {
 	s := &builder{
 		Str:    &strings.Builder{},
 		Indent: -1, // Accounting for the fact that each chunk call increments Indent by one
@@ -18,11 +18,11 @@ func (c Chunk) String() string {
 
 // Expressions
 
-func (v *NilExpr) String() string { return "nil" }
-func (v *TrueExpr) String() string { return "true" }
-func (v *FalseExpr) String() string { return "false" }
-func (v *IdentExpr) String() string { return v.Value }
-func (v *Comma3Expr) String() string { return "..."}
+func (v *NilExpr) String() string    { return "nil" }
+func (v *TrueExpr) String() string   { return "true" }
+func (v *FalseExpr) String() string  { return "false" }
+func (v *IdentExpr) String() string  { return v.Value }
+func (v *Comma3Expr) String() string { return "..." }
 
 func (v *NumberExpr) String() string {
 	return strconv.FormatFloat(v.Value, 'f', -1, 64)

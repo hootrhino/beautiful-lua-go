@@ -1,3 +1,3 @@
-module github.com/notnoobmaster/luautil
+module github.com/hootrhino/beautiful-lua-go
 
 go 1.16

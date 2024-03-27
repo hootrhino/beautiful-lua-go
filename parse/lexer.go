@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/notnoobmaster/luautil/ast"
+	"github.com/hootrhino/beautiful-lua-go/ast"
 )
 
 const EOF = -1
@@ -149,9 +149,9 @@ func (sc *Scanner) scanIdent(ch int, buf *bytes.Buffer) error {
 func (sc *Scanner) scanDecimal(ch int, buf *bytes.Buffer) error {
 	writeChar(buf, ch)
 	for isDecimal(sc.Peek()) || sc.Peek() == '_' {
-		if sc.Peek() == '_' { 
+		if sc.Peek() == '_' {
 			sc.Next()
-			continue 
+			continue
 		}
 		writeChar(buf, sc.Next())
 	}
@@ -168,10 +168,10 @@ func (sc *Scanner) scanNumber(ch int, buf *bytes.Buffer) (float64, error) {
 				writeChar(buf, n)
 				return 0, sc.Error(buf.String(), "hex number expected")
 			}
-			for isDigit(sc.Peek())  || sc.Peek() == '_' {
-				if sc.Peek() == '_' { 
+			for isDigit(sc.Peek()) || sc.Peek() == '_' {
+				if sc.Peek() == '_' {
 					sc.Next()
-					continue 
+					continue
 				}
 				writeChar(buf, sc.Next())
 			}
@@ -185,9 +185,9 @@ func (sc *Scanner) scanNumber(ch int, buf *bytes.Buffer) (float64, error) {
 				return 0, sc.Error(buf.String(), "binary number expected")
 			}
 			for isBinary(sc.Peek()) || sc.Peek() == '_' {
-				if sc.Peek() == '_' { 
+				if sc.Peek() == '_' {
 					sc.Next()
-					continue 
+					continue
 				}
 				writeChar(buf, sc.Next())
 			}
@@ -200,10 +200,10 @@ func (sc *Scanner) scanNumber(ch int, buf *bytes.Buffer) (float64, error) {
 				writeChar(buf, n)
 				return 0, sc.Error(buf.String(), "octal number expected")
 			}
-			for isOctal(sc.Peek())  || sc.Peek() == '_' {
-				if sc.Peek() == '_' { 
+			for isOctal(sc.Peek()) || sc.Peek() == '_' {
+				if sc.Peek() == '_' {
 					sc.Next()
-					continue 
+					continue
 				}
 				writeChar(buf, sc.Next())
 			}

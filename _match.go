@@ -1,15 +1,14 @@
 package luautil
 
 import (
-	"github.com/notnoobmaster/luautil/ast" 
-
+	"github.com/hootrhino/beautiful-lua-go/ast"
 )
 
 type state struct {
 	Pattern []ast.Stmt
-	Exprs []ast.Expr
-	Chunk []ast.Stmt
-	Exit bool
+	Exprs   []ast.Expr
+	Chunk   []ast.Stmt
+	Exit    bool
 }
 
 func (s *state) quickTraverseExpr(expr ast.Expr) {
@@ -86,7 +85,7 @@ func (s *state) exprEqual(expr ast.Expr, selector ast.Expr) bool {
 		}
 	case *ast.IdentExpr:
 		if ident, ok := selector.(*ast.IdentExpr); ok {
-			if ident.Value == "_IdentExpr_" {	
+			if ident.Value == "_IdentExpr_" {
 				s.Exprs = append(s.Exprs, ex)
 			} else if ident.Value == "_FunctionExpr_" {
 				s.Exprs = append(s.Exprs, ex)
@@ -96,7 +95,7 @@ func (s *state) exprEqual(expr ast.Expr, selector ast.Expr) bool {
 	case *ast.UnaryOpExpr:
 		if unary, ok := selector.(*ast.UnaryOpExpr); ok {
 			return s.exprEqual(ex.Expr, unary.Expr)
-		} 
+		}
 	case *ast.ArithmeticOpExpr:
 		if arith, ok := selector.(*ast.ArithmeticOpExpr); ok && ex.Operator == arith.Operator {
 			return s.exprEqual(ex.Lhs, arith.Lhs) && s.exprEqual(ex.Rhs, arith.Rhs)
@@ -115,7 +114,7 @@ func (s *state) exprEqual(expr ast.Expr, selector ast.Expr) bool {
 		}
 	case *ast.StringConcatOpExpr:
 		if str, ok := selector.(*ast.StringConcatOpExpr); ok {
-			return s.exprEqual(ex.Lhs, str.Lhs)  && s.exprEqual(ex.Rhs, str.Rhs)
+			return s.exprEqual(ex.Lhs, str.Lhs) && s.exprEqual(ex.Rhs, str.Rhs)
 		}
 	case *ast.TableExpr: // TODO Frankly in-depth table comparison is useless
 		if _, ok := selector.(*ast.TableExpr); ok {
@@ -132,9 +131,9 @@ func (s *state) exprEqual(expr ast.Expr, selector ast.Expr) bool {
 		}
 	case *ast.FunctionExpr:
 		if f, ok := selector.(*ast.FunctionExpr); ok {
-			if ex.ParList.HasVargs == f.ParList.HasVargs && 
-			len(ex.ParList.Names) == len(f.ParList.Names) && 
-			s.stmtsEqual(ex.Chunk, f.Chunk) {
+			if ex.ParList.HasVargs == f.ParList.HasVargs &&
+				len(ex.ParList.Names) == len(f.ParList.Names) &&
+				s.stmtsEqual(ex.Chunk, f.Chunk) {
 				for i, name := range f.ParList.Names {
 					if name == "_IdentExpr_" {
 						s.Exprs = append(s.Exprs, &ast.IdentExpr{Value: ex.ParList.Names[i]})
@@ -175,8 +174,8 @@ func (s *state) assignEqual(first *ast.AssignStmt, second *ast.AssignStmt) bool 
 }
 
 func (s *state) localAssignEqual(first *ast.LocalAssignStmt, second *ast.LocalAssignStmt) bool {
-	return len(second.Names) == len(first.Names) && 
-		len(second.Exprs) == len(first.Exprs) && 
+	return len(second.Names) == len(first.Names) &&
+		len(second.Exprs) == len(first.Exprs) &&
 		s.exprsEqual(first.Exprs, second.Exprs)
 }
 
@@ -194,7 +193,7 @@ func (s *state) whileEqual(first *ast.WhileStmt, second *ast.WhileStmt) bool {
 }
 
 func (s *state) repeatEqual(first *ast.RepeatStmt, second *ast.RepeatStmt) bool {
-	return s.exprEqual(first.Condition, second.Condition) && 
+	return s.exprEqual(first.Condition, second.Condition) &&
 		s.stmtsEqual(first.Chunk, second.Chunk)
 }
 
@@ -216,7 +215,7 @@ func (s *state) returnEqual(first *ast.ReturnStmt, second *ast.ReturnStmt) bool 
 }
 
 func (s *state) ifEqual(first *ast.IfStmt, second *ast.IfStmt) bool {
-	return s.exprEqual(first.Condition, second.Condition) && 
+	return s.exprEqual(first.Condition, second.Condition) &&
 		s.stmtsEqual(first.Then, second.Then) &&
 		s.stmtsEqual(first.Else, second.Else)
 }
@@ -371,7 +370,7 @@ func (s *state) match(chunk []ast.Stmt) (success bool) {
 				pos = 0
 				success = true
 			} else {
-				if s.match(stmt.Chunk){
+				if s.match(stmt.Chunk) {
 					return true
 				}
 			}
@@ -383,7 +382,7 @@ func (s *state) match(chunk []ast.Stmt) (success bool) {
 				success = true
 			} else {
 				s.quickTraverseExpr(stmt.Condition)
-				if s.match(stmt.Chunk){
+				if s.match(stmt.Chunk) {
 					return true
 				}
 			}
@@ -395,9 +394,9 @@ func (s *state) match(chunk []ast.Stmt) (success bool) {
 				success = true
 			} else {
 				s.quickTraverseExpr(stmt.Condition)
-				if s.match(stmt.Chunk){
+				if s.match(stmt.Chunk) {
 					return true
-				}	
+				}
 			}
 		case *ast.LocalFunctionStmt:
 			if result, ok := cStmt.(*ast.LocalFunctionStmt); ok && s.localFunctionEqual(stmt, result) {
@@ -464,7 +463,6 @@ func (s *state) match(chunk []ast.Stmt) (success bool) {
 				s.match(stmt.Chunk)
 			}
 		}
-
 
 		if s.Exit {
 			return true

@@ -3,10 +3,10 @@ package ssa
 import (
 	"fmt"
 
-	"github.com/notnoobmaster/luautil/ast"
+	"github.com/hootrhino/beautiful-lua-go/ast"
 )
 
-type builder struct {}
+type builder struct{}
 
 func (b *builder) expr(fn *Function, expr ast.Expr) Value {
 	switch ex := expr.(type) {

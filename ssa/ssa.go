@@ -3,7 +3,7 @@ package ssa
 import (
 	"fmt"
 
-	"github.com/notnoobmaster/luautil/ast"
+	"github.com/hootrhino/beautiful-lua-go/ast"
 )
 
 type Value interface {
@@ -38,14 +38,14 @@ type Function struct {
 	UpValues  []*Local
 	Functions []*Function   // nested functions defined inside this one
 	Blocks    []*BasicBlock // basic blocks of the function; nil => external
-	VarArg        bool
-	
+	VarArg    bool
+
 	syntax        *ast.FunctionExpr
 	parent        *Function     // enclosing function if anon; nil if global
 	referrers     []Instruction // referring instructions (iff Parent() != nil)
 	continueBlock *BasicBlock
 	breakBlock    *BasicBlock
-	num int
+	num           int
 
 	// The following fields are set transiently during building,
 	// then cleared.
@@ -144,11 +144,11 @@ type Call struct {
 
 // Expressions
 
-type Nil struct {}
+type Nil struct{}
 
-type True struct {}
+type True struct{}
 
-type False struct {}
+type False struct{}
 
 type Number struct {
 	Value float64
@@ -225,8 +225,8 @@ func (v *Phi) Operands(rands []*Value) []*Value {
 }
 
 // Non-Instruction Values:
-//func (v *Const) Operands(rands []*Value) []*Value    { return rands }
+// func (v *Const) Operands(rands []*Value) []*Value    { return rands }
 func (v *Function) Operands(rands []*Value) []*Value { return rands }
 
-//func (v *Function) Name() string                     { return fmt.Sprintf("func:%d", v.num) }
+// func (v *Function) Name() string                     { return fmt.Sprintf("func:%d", v.num) }
 func (v *Local) Name() string { return fmt.Sprintf("t%d", v.Num) }

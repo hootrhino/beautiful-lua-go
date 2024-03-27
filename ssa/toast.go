@@ -3,9 +3,8 @@ package ssa
 import (
 	"fmt"
 
-	"github.com/notnoobmaster/luautil/ast"
+	"github.com/hootrhino/beautiful-lua-go/ast"
 )
-
 
 func expr(v Value) ast.Expr {
 	switch v := v.(type) {
@@ -45,7 +44,7 @@ func expr(v Value) ast.Expr {
 	case Relation:
 		return &ast.RelationalOpExpr{
 			Operator: v.Op,
-			
+
 			Lhs: expr(v.Lhs),
 			Rhs: expr(v.Rhs),
 		}
@@ -59,17 +58,17 @@ func expr(v Value) ast.Expr {
 	case Unary:
 		return &ast.UnaryOpExpr{
 			Operator: v.Op,
-			Expr:    expr(v.Value),
+			Expr:     expr(v.Value),
 		}
 	default:
-		panic("unimplemented"+ fmt.Sprint(v))
+		panic("unimplemented" + fmt.Sprint(v))
 	}
 }
 
 func (b *BasicBlock) ToAst(dom domFrontier) (chunk ast.Chunk) {
 	for _, inst := range b.Instrs {
-		switch i := inst.(type) {	
-		case *Assign:	
+		switch i := inst.(type) {
+		case *Assign:
 			if l, ok := i.Lhs.(*Local); ok && !l.declared {
 				chunk = append(chunk, &ast.LocalAssignStmt{
 					Names: []string{l.Comment},
@@ -104,7 +103,7 @@ func (f *Function) Chunk() (chunk ast.Chunk) {
 	return root.ToAst()
 }
 
-/* 
+/*
 if cond then
 	...
 end
@@ -115,7 +114,7 @@ else
 	...
 end
 
-while cond do 
+while cond do
 	...
 end
 

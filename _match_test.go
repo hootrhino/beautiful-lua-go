@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/notnoobmaster/luautil/parse"
+	"github.com/hootrhino/beautiful-lua-go/parse"
 )
 
 const target = `

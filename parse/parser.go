@@ -5,7 +5,7 @@ package parse
 import __yyfmt__ "fmt"
 
 import (
-	"github.com/notnoobmaster/luautil/ast"
+	"github.com/hootrhino/beautiful-lua-go/ast"
 )
 
 type yySymType struct {

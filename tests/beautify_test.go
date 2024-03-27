@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/notnoobmaster/luautil/parse"
+	"github.com/hootrhino/beautiful-lua-go/parse"
 )
 
 var assignment = []string{
@@ -153,26 +153,26 @@ var gotolabel = []string{
 }
 
 var tests = map[string][]string{
-	"Assignment": assignment,
+	"Assignment":    assignment,
 	"Structures":    control,
-	"Terminators": terminators,
-	"Declarations": declarations,
-	"Expressions": expressions,
-	"Arithmetic": arithmetic,
-	"Relational": relational,
-	"Logical":    logical,
+	"Terminators":   terminators,
+	"Declarations":  declarations,
+	"Expressions":   expressions,
+	"Arithmetic":    arithmetic,
+	"Relational":    relational,
+	"Logical":       logical,
 	"Concatenation": concatenation,
-	"Length":      length,
-	"Table":       table,
-	"Calls":       calls,
-	"Definitions": definitions,
-	"Bitwise": bitwise,
-	"Goto&Labels": gotolabel,
+	"Length":        length,
+	"Table":         table,
+	"Calls":         calls,
+	"Definitions":   definitions,
+	"Bitwise":       bitwise,
+	"Goto&Labels":   gotolabel,
 }
 
 func TestFormat(t *testing.T) {
 	for name, test := range tests {
-		t.Run(name, func(t *testing.T){
+		t.Run(name, func(t *testing.T) {
 			for _, s := range test {
 				chunk, err := parse.Parse(strings.NewReader(s), "")
 				if err != nil {
@@ -198,7 +198,7 @@ func TestNumbers(t *testing.T) {
 		"_ = 0x0;\n",
 		"_ = 0X0;\n",
 		"_ = 0x0_0__0;\n",
-		
+
 		"_ = 0b0;\n",
 		"_ = 0B0;\n",
 		"_ = 0b0_0__0;\n",
@@ -228,14 +228,9 @@ _ = _ or _ and _
 var test string
 
 func TestBeautify(t *testing.T) {
-	f, err := os.Create("test.lua")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer f.Close()
 	chunk, err := parse.Parse(strings.NewReader(test), "")
 	if err != nil {
 		t.Fatal(err)
 	}
-	f.WriteString(chunk.String())
+	os.WriteFile("test1.lua", []byte(chunk.String()), 0755)
 }
